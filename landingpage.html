@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Pursuit | A free 21-day accountability community</title>
+    
+    <!-- SEO / Open Graph Meta Tags -->
+    <meta name="description" content="A free community for builders, hustlers and doers who are done postponing. 21 days of daily proof.">
+    <meta name="theme-color" content="#000000">
+    <meta property="og:title" content="The Pursuit | A free 21-day accountability community">
+    <meta property="og:description" content="21 days. One goal. Showing up. Stop postponing and join the waiting room.">
+    <meta property="og:type" content="website">
+    
+    <!-- Google Fonts: Cormorant Garamond & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pureBlack: '#000000',
+                        offWhite: '#E8E8E8',
+                        mutedText: '#9A9A9A',
+                        lineSilver: '#333333',
+                        borderSilver: '#222222'
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Cinematic Styles */
+        body {
+            background-color: #000000;
+            color: #E8E8E8;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .font-serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* Subtle Film Grain Overlay */
+        .film-grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Vignette effect */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 998;
+            background: radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(0,0,0,0.9) 100%);
+        }
+
+        /* Animated Glowing Silver Divider Line */
+        .glow-line {
+            height: 1px;
+            width: 100%;
+            background: linear-gradient(90deg, rgba(232,232,232,0) 0%, rgba(232,232,232,0.45) 50%, rgba(232,232,232,0) 100%);
+            position: relative;
+            overflow: hidden;
+            transform: scaleX(0);
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glow-line.in-view {
+            transform: scaleX(1);
+        }
+
+        .glow-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+            animation: shimmer 4s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        /* Scroll Reveal Animation Classes */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-up.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Respect prefers-reduced-motion */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal-up, .glow-line {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+            .glow-line::after {
+                animation: none !important;
+            }
+        }
+
+        /* Custom Accordion Styling */
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details[open] summary .accordion-icon {
+            transform: rotate(45deg);
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+
+        /* Metallic text gradient matching reference image */
+        .metallic-text {
+            background: linear-gradient(180deg, #FFFFFF 0%, #D0D0D0 50%, #909090 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-black">
+
+    <!-- Cinematic Overlays -->
+    <div class="film-grain"></div>
+    <div class="vignette"></div>
+
+    <!-- CONFIGURABLE CONSTANTS SCRIPT -->
+    <script>
+        const CONFIG = {
+            DISCORD_INVITE_URL: "https://discord.gg/zzjHY2AhN",
+            START_DATE: "2026-12-01T00:00:00+05:30",
+            INSTAGRAM_URL: "https://instagram.com/the.pursuit.21",
+            YOUTUBE_URL: "https://youtube.com/the.pursuit.21",
+            ABOUT_TEXT: "A CS student building this in public."
+        };
+    </script>
+
+    <!-- MAIN CONTAINER (~720px width per PRD) -->
+    <main class="max-w-[720px] mx-auto px-6 sm:px-8 py-16 sm:py-24 flex flex-col justify-between min-h-screen relative z-10">
+
+        <!-- 5.1 HERO SECTION -->
+        <section class="flex flex-col items-center text-center pt-4 pb-16">
+            
+            <!-- Custom SVG Logo Matching Reference Image ("the" in italic serif, lines above/below, large serif PURSUIT) -->
+            <div class="reveal-up mb-10 w-full max-w-[340px] sm:max-w-[400px]">
+                <div class="relative py-4 flex flex-col items-center">
+                    <!-- Top thin glowing silver line -->
+                    <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent relative mb-1.5">
+                        <div class="absolute -top-1 left-1/2 -translate-x-1/2 w-12 h-[3px] bg-white blur-[1px]"></div>
+                    </div>
+                    
+                    <!-- Logo Typography Header -->
+                    <div class="relative w-full flex flex-col items-center py-1">
+                        <!-- 'the' in italic serif floating above -->
+                        <div class="text-left w-full pl-8 sm:pl-12 mb-[-10px]">
+                            <span class="font-serif italic font-normal text-xl sm:text-2xl text-mutedText tracking-wide">the</span>
+                        </div>
+                        <!-- 'PURSUIT' in large metallic serif -->
+                        <h2 class="font-serif font-normal text-4xl sm:text-6xl tracking-[0.12em] uppercase metallic-text pl-2">
+                            pursuit
+                        </h2>
+                    </div>
+
+                    <!-- Bottom thin glowing silver line -->
+                    <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent relative mt-1.5">
+                        <div class="absolute -top-1 left-1/2 -translate-x-1/2 w-16 h-[3px] bg-white blur-[1px]"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Glowing Divider Line -->
+            <div class="glow-line my-4"></div>
+
+            <!-- Headline -->
+            <h1 class="reveal-up font-serif text-4xl sm:text-6xl md:text-7xl font-normal text-offWhite tracking-tight leading-[1.1] mb-6 mt-6">
+                21 days. One goal.<br>Showing up.
+            </h1>
+
+            <!-- Subtext -->
+            <p class="reveal-up text-mutedText text-base sm:text-lg font-light max-w-lg mb-10 leading-relaxed">
+                A free community for builders, hustlers and doers who are done postponing.
+            </p>
+
+            <!-- Primary CTA Button -->
+            <div class="reveal-up flex flex-col items-center w-full">
+                <a id="hero-cta-btn" href="#" target="_blank" rel="noopener noreferrer" 
+                   class="w-full sm:w-auto px-8 py-4 bg-offWhite text-pureBlack font-medium text-sm tracking-wide rounded-none hover:bg-white transition-all duration-300 shadow-2xl text-center">
+                    Join the waiting room
+                </a>
+                <span id="start-date-label" class="text-xs text-mutedText mt-4 font-mono tracking-wider uppercase">
+                    First batch starts Tuesday, 1 December 2026.
+                </span>
+            </div>
+        </section>
+
+        <!-- Section Divider -->
+        <div class="glow-line my-12"></div>
+
+        <!-- 5.2 THE PROBLEM -->
+        <section class="reveal-up py-12 text-center sm:text-left">
+            <h2 class="font-serif text-3xl sm:text-4xl text-offWhite mb-4">
+                It's not that you're lazy.
+            </h2>
+            <p class="text-mutedText text-base sm:text-lg font-light leading-relaxed max-w-xl">
+                Quitting in private feels painless. Until someone expects your update.
+            </p>
+        </section>
+
+        <!-- Section Divider -->
+        <div class="glow-line my-12"></div>
+
+        <!-- 5.3 HOW IT WORKS -->
+        <section class="reveal-up py-12">
+            <h2 class="font-serif text-3xl sm:text-4xl text-offWhite mb-10 text-center sm:text-left">
+                How it works
+            </h2>
+            
+            <div class="space-y-8">
+                <!-- Step 1 -->
+                <div class="group border-b border-borderSilver pb-6">
+                    <div class="flex items-baseline gap-4 mb-2">
+                        <span class="font-serif text-mutedText text-sm">01</span>
+                        <h3 class="font-serif text-xl sm:text-2xl text-offWhite">Post your target.</h3>
+                    </div>
+                    <p class="text-mutedText text-sm sm:text-base font-light pl-7">
+                        Every morning, share 1 to 3 things you'll do today.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="group border-b border-borderSilver pb-6">
+                    <div class="flex items-baseline gap-4 mb-2">
+                        <span class="font-serif text-mutedText text-sm">02</span>
+                        <h3 class="font-serif text-xl sm:text-2xl text-offWhite">Work for 30 minutes.</h3>
+                    </div>
+                    <p class="text-mutedText text-sm sm:text-base font-light pl-7">
+                        One goal. Small enough that you can't skip it.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="group pb-2">
+                    <div class="flex items-baseline gap-4 mb-2">
+                        <span class="font-serif text-mutedText text-sm">03</span>
+                        <h3 class="font-serif text-xl sm:text-2xl text-offWhite">Post proof.</h3>
+                    </div>
+                    <p class="text-mutedText text-sm sm:text-base font-light pl-7">
+                        A screenshot, a link, a photo of your notes. Proof, not promises.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Divider -->
+        <div class="glow-line my-12"></div>
+
+        <!-- 5.4 WHAT'S INSIDE -->
+        <section class="reveal-up py-12">
+            <h2 class="font-serif text-3xl sm:text-4xl text-offWhite mb-6 text-center sm:text-left">
+                What's inside
+            </h2>
+            <p class="text-mutedText text-base font-light mb-8">
+                Designed for daily momentum and genuine progress:
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+                <div class="p-5 border border-borderSilver bg-[#050505] rounded-none">
+                    <span class="font-mono text-xs text-mutedText block mb-1">01 / LOG</span>
+                    <h3 class="font-serif text-lg text-offWhite">Daily standup & proof</h3>
+                </div>
+                <div class="p-5 border border-borderSilver bg-[#050505] rounded-none">
+                    <span class="font-mono text-xs text-mutedText block mb-1">02 / WINS</span>
+                    <h3 class="font-serif text-lg text-offWhite">Tiny wins count</h3>
+                </div>
+                <div class="p-5 border border-borderSilver bg-[#050505] rounded-none">
+                    <span class="font-mono text-xs text-mutedText block mb-1">03 / RANK</span>
+                    <h3 class="font-serif text-lg text-offWhite">Weekly shoutouts: Consistency Star, Helper of the Week, Win of the Week</h3>
+                </div>
+                <div class="p-5 border border-borderSilver bg-[#050505] rounded-none">
+                    <span class="font-mono text-xs text-mutedText block mb-1">04 / SHELF</span>
+                    <h3 class="font-serif text-lg text-offWhite">Curated resources by field</h3>
+                </div>
+                <div class="p-5 border border-borderSilver bg-[#050505] rounded-none sm:col-span-2">
+                    <span class="font-mono text-xs text-mutedText block mb-1">05 / TEAM</span>
+                    <h3 class="font-serif text-lg text-offWhite">Group projects & peer collaboration</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Divider -->
+        <div class="glow-line my-12"></div>
+
+        <!-- 5.4a LEARN AND BUILD TOGETHER -->
+        <section class="reveal-up py-12">
+            <h2 class="font-serif text-3xl sm:text-4xl text-offWhite mb-4 text-center sm:text-left">
+                Learn with people who are learning too.
+            </h2>
+            <p class="text-mutedText text-base sm:text-lg font-light mb-8 leading-relaxed">
+                Pick your field, ask questions, get help, and team up on projects. No one starts alone.
+            </p>
+
+            <div class="space-y-4 mb-8">
+                <div class="p-5 border border-borderSilver bg-[#050505]">
+                    <h3 class="font-serif text-lg text-offWhite mb-1">Ask and get help</h3>
+                    <p class="text-mutedText text-sm font-light">Stuck? Ask in the help channel. Someone has been there.</p>
+                </div>
+                <div class="p-5 border border-borderSilver bg-[#050505]">
+                    <h3 class="font-serif text-lg text-offWhite mb-1">Learn in your field</h3>
+                    <p class="text-mutedText text-sm font-light">AI automation, web dev, app dev, design, business, academics or fitness. Find people on the same path.</p>
+                </div>
+                <div class="p-5 border border-borderSilver bg-[#050505]">
+                    <h3 class="font-serif text-lg text-offWhite mb-1">Build together</h3>
+                    <p class="text-mutedText text-sm font-light">Team up with other members on group projects.</p>
+                </div>
+            </div>
+
+            <!-- Fields Tags -->
+            <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1.5 border border-borderSilver text-xs font-mono text-mutedText bg-pureBlack">AI & Automation</span>
+                <span class="px-3 py-1.5 border border-borderSilver text-xs font-mono text-mutedText bg-pureBlack">Web Dev</span>
+                <span class="px-3 py-1.5 border border-borderSilver text-xs font-mono text-mutedText bg-pureBlack">App Dev</span>
+                <span class="px-3 py-1.5 border border-borderSilver text-xs font-mono text-mutedText bg-pureBlack">Design & Content</span>
+                <span class="px-3 py-1.5 border border-borderSilver text-xs font-mono text-mutedText bg-pureBlack">Business & Sales</span>
+                <span class="px-3 py-1.5 border border-borderSilver text-xs font-mono text-mutedText bg-pureBlack">Academics</span>
+                <span class="px-3 py-1.5 border border-borderSilver text-xs font-mono text-mutedText bg-pureBlack">Fitness</span>
+            </div>
+        </section>
+
+        <!-- Section Divider -->
+        <div class="glow-line my-12"></div>
+
+        <!-- WEEKLY SHOUTOUTS -->
+        <section class="reveal-up py-12">
+            <h2 class="font-serif text-3xl sm:text-4xl text-offWhite mb-4 text-center sm:text-left">
+                Every week, someone gets called out. In a good way.
+            </h2>
+            <p class="text-mutedText text-base sm:text-lg font-light mb-8 leading-relaxed">
+                Every Sunday we recognise the people who showed up. Not the loudest. The most consistent.
+            </p>
+
+            <div class="space-y-4 mb-6">
+                <div class="p-5 border border-borderSilver bg-[#050505]">
+                    <span class="font-mono text-xs text-mutedText block mb-1">01 / CONSISTENCY</span>
+                    <h3 class="font-serif text-lg text-offWhite mb-1">Consistency Star</h3>
+                    <p class="text-mutedText text-sm font-light">The member who showed up with proof on the most days that week.</p>
+                </div>
+                <div class="p-5 border border-borderSilver bg-[#050505]">
+                    <span class="font-mono text-xs text-mutedText block mb-1">02 / COMMUNITY</span>
+                    <h3 class="font-serif text-lg text-offWhite mb-1">Helper of the Week</h3>
+                    <p class="text-mutedText text-sm font-light">The member who helped others the most in the help channel.</p>
+                </div>
+                <div class="p-5 border border-borderSilver bg-[#050505]">
+                    <span class="font-mono text-xs text-mutedText block mb-1">03 / MOMENTUM</span>
+                    <h3 class="font-serif text-lg text-offWhite mb-1">Win of the Week</h3>
+                    <p class="text-mutedText text-sm font-light">A small or big win nominated by the community.</p>
+                </div>
+            </div>
+
+            <p class="text-xs text-mutedText font-mono italic">
+                Shoutouts are posted in the community every Sunday. Small wins count too.
+            </p>
+        </section>
+
+        <!-- Section Divider -->
+        <div class="glow-line my-12"></div>
+
+        <!-- 5.4b CURATED RESOURCES -->
+        <section class="reveal-up py-12">
+            <h2 class="font-serif text-3xl sm:text-4xl text-offWhite mb-4 text-center sm:text-left">
+                A curated shelf. Not a dumping ground.
+            </h2>
+            <p class="text-mutedText text-base sm:text-lg font-light mb-6 leading-relaxed">
+                We hand-pick free tutorials, guides, tools and templates for each field and add them to the community. Everything is checked, so you spend time learning, not searching.
+            </p>
+            <p class="text-xs text-mutedText font-mono italic">
+                Have a resource you'd like added? Suggest it to the mods.
+            </p>
+        </section>
+
+        <!-- Section Divider -->
+        <div class="glow-line my-12"></div>
+
+        <!-- 5.5 LIVE COUNTDOWN -->
+        <section class="reveal-up py-12 text-center">
+            <h2 id="countdown-heading" class="font-serif text-3xl sm:text-4xl text-offWhite mb-8">
+                The first batch begins in
+            </h2>
+            
+            <div id="countdown-box" class="grid grid-cols-4 gap-3 max-w-md mx-auto mb-6">
+                <div class="border border-borderSilver p-4 bg-[#080808]">
+                    <span id="days" class="font-serif text-3xl sm:text-4xl text-offWhite block">00</span>
+                    <span class="text-[10px] font-mono text-mutedText uppercase tracking-wider">Days</span>
+                </div>
+                <div class="border border-borderSilver p-4 bg-[#080808]">
+                    <span id="hours" class="font-serif text-3xl sm:text-4xl text-offWhite block">00</span>
+                    <span class="text-[10px] font-mono text-mutedText uppercase tracking-wider">Hours</span>
+                </div>
+                <div class="border border-borderSilver p-4 bg-[#080808]">
+                    <span id="minutes" class="font-serif text-3xl sm:text-4xl text-offWhite block">00</span>
+                    <span class="text-[10px] font-mono text-mutedText uppercase tracking-wider">Mins</span>
+                </div>
+                <div class="border border-borderSilver p-4 bg-[#080808]">
+                    <span id="seconds" class="font-serif text-3xl sm:text-4xl text-offWhite block">00</span>
+                    <span class="text-[10px] font-mono text-mutedText uppercase tracking-wider">Secs</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Divider -->
+        <div class="glow-line my-12"></div>
+
+        <!-- 5.6 PRINCIPLES -->
+        <section class="reveal-up py-12">
+            <h2 class="font-serif text-3xl sm:text-4xl text-offWhite mb-8 text-center sm:text-left">
+                Principles
+            </h2>
+            <ul class="space-y-4 text-mutedText text-sm sm:text-base font-light">
+                <li class="flex items-start gap-3">
+                    <span class="text-offWhite">—</span>
+                    <span><strong class="text-offWhite font-normal">Zero hype.</strong> No income claims, no gurus.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-offWhite">—</span>
+                    <span><strong class="text-offWhite font-normal">Stay faceless if you want.</strong> Only your work is visible.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-offWhite">—</span>
+                    <span><strong class="text-offWhite font-normal">Small wins count.</strong> Every day is visible.</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-offWhite">—</span>
+                    <span><strong class="text-offWhite font-normal">Missed a day?</strong> Come back.</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Section Divider -->
+        <div class="glow-line my-12"></div>
+
+        <!-- 5.7 FAQ SECTION -->
+        <section class="reveal-up py-12">
+            <h2 class="font-serif text-3xl sm:text-4xl text-offWhite mb-8 text-center sm:text-left">
+                Frequently asked questions
+            </h2>
+
+            <div class="space-y-4">
+                <details class="border border-borderSilver bg-[#050505] p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center text-offWhite font-serif text-lg">
+                        <span>Is it free?</span>
+                        <span class="accordion-icon font-mono text-sm text-mutedText">+</span>
+                    </summary>
+                    <p class="text-mutedText text-sm font-light mt-3 pt-3 border-t border-borderSilver/50 leading-relaxed">
+                        Yes. The first 21-day batch is free.
+                    </p>
+                </details>
+
+                <details class="border border-borderSilver bg-[#050505] p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center text-offWhite font-serif text-lg">
+                        <span>How much time does it take?</span>
+                        <span class="accordion-icon font-mono text-sm text-mutedText">+</span>
+                    </summary>
+                    <p class="text-mutedText text-sm font-light mt-3 pt-3 border-t border-borderSilver/50 leading-relaxed">
+                        At least 30 minutes a day on your own goal.
+                    </p>
+                </details>
+
+                <details class="border border-borderSilver bg-[#050505] p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center text-offWhite font-serif text-lg">
+                        <span>What counts as proof?</span>
+                        <span class="accordion-icon font-mono text-sm text-mutedText">+</span>
+                    </summary>
+                    <p class="text-mutedText text-sm font-light mt-3 pt-3 border-t border-borderSilver/50 leading-relaxed">
+                        A screenshot, a link, a photo of your notes, a timer or workout log. No faces or personal details needed.
+                    </p>
+                </details>
+
+                <details class="border border-borderSilver bg-[#050505] p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center text-offWhite font-serif text-lg">
+                        <span>Do I need to show my face?</span>
+                        <span class="accordion-icon font-mono text-sm text-mutedText">+</span>
+                    </summary>
+                    <p class="text-mutedText text-sm font-light mt-3 pt-3 border-t border-borderSilver/50 leading-relaxed">
+                        No.
+                    </p>
+                </details>
+
+                <details class="border border-borderSilver bg-[#050505] p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center text-offWhite font-serif text-lg">
+                        <span>What if I miss a day?</span>
+                        <span class="accordion-icon font-mono text-sm text-mutedText">+</span>
+                    </summary>
+                    <p class="text-mutedText text-sm font-light mt-3 pt-3 border-t border-borderSilver/50 leading-relaxed">
+                        Come back the next day. Streaks can break, people shouldn't.
+                    </p>
+                </details>
+
+                <details class="border border-borderSilver bg-[#050505] p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center text-offWhite font-serif text-lg">
+                        <span>Who is it for?</span>
+                        <span class="accordion-icon font-mono text-sm text-mutedText">+</span>
+                    </summary>
+                    <p class="text-mutedText text-sm font-light mt-3 pt-3 border-t border-borderSilver/50 leading-relaxed">
+                        Builders, hustlers and doers: anyone working on a goal, whether that's a project, studies, fitness or a business. Students are very welcome.
+                    </p>
+                </details>
+
+                <details class="border border-borderSilver bg-[#050505] p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center text-offWhite font-serif text-lg">
+                        <span>How are shoutouts chosen?</span>
+                        <span class="accordion-icon font-mono text-sm text-mutedText">+</span>
+                    </summary>
+                    <p class="text-mutedText text-sm font-light mt-3 pt-3 border-t border-borderSilver/50 leading-relaxed">
+                        Every Sunday we look at who showed up with proof the most (Consistency Star), who helped others (Helper of the Week), and which win the community liked most (Win of the Week).
+                    </p>
+                </details>
+
+                <details class="border border-borderSilver bg-[#050505] p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center text-offWhite font-serif text-lg">
+                        <span>What kind of resources are shared?</span>
+                        <span class="accordion-icon font-mono text-sm text-mutedText">+</span>
+                    </summary>
+                    <p class="text-mutedText text-sm font-light mt-3 pt-3 border-t border-borderSilver/50 leading-relaxed">
+                        Free, hand-picked tutorials, guides, tools and templates for each field. Mods add them, and you can suggest more. Pirated or paid-course dumps aren't allowed.
+                    </p>
+                </details>
+
+                <details class="border border-borderSilver bg-[#050505] p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center text-offWhite font-serif text-lg">
+                        <span>Can I work on group projects?</span>
+                        <span class="accordion-icon font-mono text-sm text-mutedText">+</span>
+                    </summary>
+                    <p class="text-mutedText text-sm font-light mt-3 pt-3 border-t border-borderSilver/50 leading-relaxed">
+                        Yes. Members can team up in their field channels once the batch is underway.
+                    </p>
+                </details>
+
+                <details class="border border-borderSilver bg-[#050505] p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center text-offWhite font-serif text-lg">
+                        <span>Can I ask questions?</span>
+                        <span class="accordion-icon font-mono text-sm text-mutedText">+</span>
+                    </summary>
+                    <p class="text-mutedText text-sm font-light mt-3 pt-3 border-t border-borderSilver/50 leading-relaxed">
+                        Yes. There's a help channel, and no question is too small.
+                    </p>
+                </details>
+
+                <details class="border border-borderSilver bg-[#050505] p-5 group cursor-pointer">
+                    <summary class="flex justify-between items-center text-offWhite font-serif text-lg">
+                        <span>Who runs it?</span>
+                        <span class="accordion-icon font-mono text-sm text-mutedText">+</span>
+                    </summary>
+                    <p id="about-text-slot" class="text-mutedText text-sm font-light mt-3 pt-3 border-t border-borderSilver/50 leading-relaxed">
+                        A CS student building this in public.
+                    </p>
+                </details>
+            </div>
+        </section>
+
+        <!-- Section Divider -->
+        <div class="glow-line my-12"></div>
+
+        <!-- 5.8 FINAL CTA & FOOTER -->
+        <footer class="reveal-up pt-12 pb-8 text-center sm:text-left">
+            <div class="mb-16 text-center">
+                <h2 class="font-serif text-4xl sm:text-5xl text-offWhite mb-6">
+                    Show up anyway.
+                </h2>
+                <div class="flex flex-col items-center w-full">
+                    <a id="footer-cta-btn" href="#" target="_blank" rel="noopener noreferrer" 
+                       class="w-full sm:w-auto px-8 py-4 bg-offWhite text-pureBlack font-medium text-sm tracking-wide rounded-none hover:bg-white transition-all duration-300 shadow-2xl text-center">
+                        Join the waiting room
+                    </a>
+                    <span class="text-xs text-mutedText mt-4 font-mono tracking-wider uppercase">
+                        First batch starts Tuesday, 1 December 2026.
+                    </span>
+                </div>
+            </div>
+
+            <!-- Footer Bottom Bar -->
+            <div class="border-t border-borderSilver pt-8 flex flex-col sm:flex-row justify-between items-center gap-6">
+                <!-- Small Logo Mark -->
+                <div class="flex items-center gap-2">
+                    <span class="font-serif text-offWhite lowercase tracking-wider">
+                        <em class="text-mutedText italic text-sm">the</em>pursuit
+                    </span>
+                </div>
+
+                <!-- Social Links -->
+                <div class="flex items-center gap-6 text-xs font-mono text-mutedText">
+                    <a id="instagram-link" href="#" target="_blank" rel="noopener noreferrer" class="hover:text-offWhite transition-colors">Instagram</a>
+                    <a id="youtube-link" href="#" target="_blank" rel="noopener noreferrer" class="hover:text-offWhite transition-colors">YouTube</a>
+                    <a id="discord-link" href="#" target="_blank" rel="noopener noreferrer" class="hover:text-offWhite transition-colors">Discord</a>
+                </div>
+
+                <!-- Privacy Note -->
+                <div class="text-xs text-mutedText font-light text-center sm:text-right">
+                    No data is collected on this site.
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- CLIENT SCRIPT: Bind Constants, IntersectionObserver, and Countdown Logic -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Bind Config Constants to DOM elements
+            document.querySelectorAll('[id$="-cta-btn"], #discord-link').forEach(el => {
+                if(el) el.href = CONFIG.DISCORD_INVITE_URL;
+            });
+            document.getElementById('instagram-link').href = CONFIG.INSTAGRAM_URL;
+            document.getElementById('youtube-link').href = CONFIG.YOUTUBE_URL;
+            document.getElementById('about-text-slot').innerText = CONFIG.ABOUT_TEXT;
+
+            // 2. IntersectionObserver for scroll reveals and line animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px 0px -50px 0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observerInstance) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal-up, .glow-line').forEach(el => {
+                observer.observe(el);
+            });
+
+            // 3. Live Countdown Timer to START_DATE (IST -> 2026-12-01T00:00:00+05:30)
+            const startDate = new Date(CONFIG.START_DATE).getTime();
+
+            const updateCountdown = () => {
+                const now = new Date().getTime();
+                const difference = startDate - now;
+
+                if (difference <= 0) {
+                    document.getElementById('countdown-heading').innerText = "Batch 1 is live.";
+                    document.getElementById('countdown-box').style.display = 'none';
+                    document.querySelectorAll('[id$="-cta-btn"]').forEach(btn => {
+                        btn.innerText = "Join the community";
+                    });
+                    document.getElementById('start-date-label').innerText = "Batch 1 is currently active.";
+                    return;
+                }
+
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById('days').innerText = String(days).padStart(2, '0');
+                document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+            };
+
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+        });
+    </script>
+</body>
+</html>
